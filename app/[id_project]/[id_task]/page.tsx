@@ -1,3 +1,4 @@
+import { Comment, CreateComment } from '@/app/components';
 import {
 	Button,
 	DescriptionDetails,
@@ -11,14 +12,17 @@ import {
 	Text,
 	Textarea,
 } from '@/core/components';
+import { CommentsService } from '@/core/services';
 
 interface TeamPageProps {
-	id_project: string;
-	id_task: string;
+	params: {
+		id_project: string;
+		id_task: string;
+	};
 }
 
-export default function TaskPage(params: TeamPageProps) {
-	const { id_project, id_task } = params;
+export default async function TaskPage({ params }: TeamPageProps) {
+	const { data: comments, meta } = await CommentsService.getComments(params.id_task);
 
 	return (
 		<main className='h-screen grid grid-cols-2 justify-center p-8 pb-20 gap-16 sm:p-20'>
@@ -35,18 +39,10 @@ export default function TaskPage(params: TeamPageProps) {
 				<Divider />
 
 				<DescriptionList>
-					<DescriptionTerm>
-						<Strong>7:43 </Strong>
-						David A.
-					</DescriptionTerm>
-					<DescriptionDetails>This is the first comment</DescriptionDetails>
+					{meta.total === 0 ? <Text>No comments here.</Text> : comments.map((comment) => <Comment comment={comment} />)}
 				</DescriptionList>
-				<Field>
-					<Textarea
-						placeholder='Write a new comment.'
-						name='description'
-					/>
-				</Field>
+
+				<CreateComment task_id={params.id_task} />
 			</div>
 
 			<div className='col-span-1'></div>
