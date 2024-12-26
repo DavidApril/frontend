@@ -1,8 +1,12 @@
 'use client';
 
 import { ITask, OUser, TaskState } from '@/core/interfaces';
-import { Badge, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/core/components';
+import { Badge, Input, InputGroup, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/core/components';
 import { EditTaskDialog } from './edit-task-dialog';
+import { useEffect, useState } from 'react';
+import { Field } from 'formik';
+import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
+import { formatDate } from '@/core/lib/utils';
 
 interface TableTaskProps {
 	tasks: ITask[];
@@ -10,6 +14,8 @@ interface TableTaskProps {
 }
 
 export const TableTasks = ({ tasks, users }: TableTaskProps) => {
+	const [search, setSearch] = useState<string>('');
+
 	const statusColors = {
 		[TaskState.TODO]: 'lime',
 		[TaskState.IN_PROGRESS]: 'amber',
@@ -20,6 +26,16 @@ export const TableTasks = ({ tasks, users }: TableTaskProps) => {
 
 	return (
 		<>
+			<InputGroup>
+				<MagnifyingGlassIcon />
+				<Input
+					name='search'
+					value={search}
+					onChange={(e) => setSearch(e.target.value)}
+					placeholder='Search&hellip;'
+					aria-label='Search'
+				/>
+			</InputGroup>
 			<Table>
 				<TableHead>
 					<TableRow>
@@ -37,7 +53,7 @@ export const TableTasks = ({ tasks, users }: TableTaskProps) => {
 						<TableRow key={task.id}>
 							<TableCell className='font-medium'>{task.title}</TableCell>
 							<TableCell>{task.description}</TableCell>
-							<TableCell>{task.due_date}</TableCell>
+							<TableCell>{formatDate(new Date(task.due_date))}</TableCell>
 							<TableCell>
 								<Badge color={statusColors[task.status]}>{task.status}</Badge>
 							</TableCell>
