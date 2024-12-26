@@ -6,3 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const sanitizeUUID = (uuid: string) => uuid.split('-')[0];
+
+export function formatDate(date: Date, locale: string = 'en-US', options: Intl.DateTimeFormatOptions = {}): string {
+	return new Intl.DateTimeFormat(locale, options).format(date);
+}
