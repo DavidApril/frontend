@@ -34,7 +34,7 @@ export const CreateTaskDialog = ({ project_id, users }: CreateTaskDialogProps) =
 
 	const { user } = useAuthStore();
 
-	const [dueDate, setDueDate] = useState<Date>();
+	const [dueDate, setDueDate] = useState<string>('');
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -46,7 +46,7 @@ export const CreateTaskDialog = ({ project_id, users }: CreateTaskDialogProps) =
 		description: 'description of test task',
 		due_date: new Date(Date.now()),
 		status: TaskState.TODO,
-		assignee_id: user.id,
+		assignee_id: users[0].id,
 	};
 
 	const validationSchema = Yup.object().shape({
@@ -65,7 +65,7 @@ export const CreateTaskDialog = ({ project_id, users }: CreateTaskDialogProps) =
 			await TasksService.createTask({
 				title: values.title,
 				description: values.description,
-				due_date: values.due_date,
+				due_date: dueDate,
 				status: values.status,
 				assignee_id: values.assignee_id,
 				project_id: project_id,
@@ -141,6 +141,7 @@ export const CreateTaskDialog = ({ project_id, users }: CreateTaskDialogProps) =
 							<Select
 								name='assignee_id'
 								value={formik.values.assignee_id}
+								defaultValue={users[0].id}
 								onChange={formik.handleChange}>
 								{users?.map((user) => (
 									<option
@@ -156,6 +157,7 @@ export const CreateTaskDialog = ({ project_id, users }: CreateTaskDialogProps) =
 							<Label>Status</Label>
 							<Select
 								name='status'
+								defaultValue={TaskState.TODO}
 								value={formik.values.status}
 								onChange={formik.handleChange}>
 								{TaskStateList?.map((status) => (

@@ -22,7 +22,6 @@ export const TableProject = ({ projects }: TableProjectProps) => {
 					<TableHeader>Id</TableHeader>
 					<TableHeader>Name</TableHeader>
 					<TableHeader>Description</TableHeader>
-					<TableHeader>No. Tasks</TableHeader>
 					<TableHeader className='text-center'>Actions</TableHeader>
 				</TableRow>
 			</TableHead>
@@ -33,7 +32,6 @@ export const TableProject = ({ projects }: TableProjectProps) => {
 						<TableCell>{project.id.split('-')[0]}</TableCell>
 						<TableCell className='font-medium'>{project.name}</TableCell>
 						<TableCell>{project.description}</TableCell>
-						<TableCell>{0}</TableCell>
 						<TableCell>
 							<>
 								<div className='flex gap-2'>

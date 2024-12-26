@@ -54,7 +54,7 @@ export default async function ProjectPage({ params }: IProjectPageProps) {
 				{tasks.length > 0 ? (
 					<TableTasks
 						users={users}
-						tasks={tasks.filter((task) => task.is_active !== false)}
+						tasks={tasks}
 					/>
 				) : (
 					<p>No tasks found</p>
